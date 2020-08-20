@@ -44,6 +44,7 @@ socket.on("message-send", async (data) => {
     let nickname = clients[data.author].nickname;
     let view = clients[data.author].view;
     $("#message-list").append(getMessage(data.author, nickname, view, data.time, message));
+    $("#message-list").scrollTop(document.getElementById("message-list").scrollHeight);
 });
 
 socket.on("key-send", async (data) => {
