@@ -1,0 +1,53 @@
+.row{
+    height: auto;
+    width: 100%;
+    display: flex;
+    max-width: 800px;
+    flex-direction: row;
+    
+    .arrow{
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        align-self: center;
+        margin: 0 10px;
+    }
+    
+    #left-arrow{
+        background: url("../images/signs/arrow-left.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    
+    #right-arrow{
+        background: url("../images/signs/arrow-right.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    
+    .slider{
+        position: relative;
+        display: flex;
+        overflow-x: hidden;
+        margin: 20px 0px;
+    }
+    
+    .item{
+        position: relative;
+        left: 0;
+        flex-shrink: 0;
+        min-height: 86px;
+        width: 86px;
+        height: 86px;
+        margin: 0 10px;
+        border: 1px solid #fff;
+        border-radius: 5px;
+        transition: border .3s;
+        transition-timing-function: ease-in-out;
+        
+    }
+    
+    .active{
+        border: 2px solid $fontColor;
+    }
+}

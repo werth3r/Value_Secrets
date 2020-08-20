@@ -1,0 +1,15 @@
+<%- include("layout/header") %>
+<div class="error">
+    <div class="container">
+        <div class="inner">
+            <div class="wrapper">
+                
+                <h1 class="title"><%= message + " " + error.status %></h1>
+                <pre class="info"><%= error.stack %></pre>
+                <a href="/" class="btm">Home</a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<%- include("layout/footer") %>

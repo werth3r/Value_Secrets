@@ -1,0 +1,47 @@
+.alert{
+    display: flex;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: rgba(#000, .5);
+    z-index: 1000;
+    
+    .wrapper{
+        height: auto;
+        display: flex;
+        min-width: 400px;
+        background: #fff;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 10px 10px;
+        
+        background: #222;
+        background-size: cover;
+        background-position: center;
+        
+        border-radius: 8px;
+        
+    }
+    .message{
+        font-size: 22px;
+        padding: 0px 30px 30px;
+    }
+    
+    .sucsessful{
+        color: $fontColor;
+    }
+    
+    .warning{
+        color: red;
+    }
+    
+    @import "components/button";
+    
+    .btm{
+        font-size: 13px;
+        padding: 4px 10px;
+        margin: 0 10px;
+    }
+}

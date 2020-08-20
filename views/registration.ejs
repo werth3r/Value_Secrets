@@ -1,0 +1,57 @@
+<%- include("layout/header.ejs") %> 
+<div class="login">
+    <div class="container">
+        <div class="inner">
+            <div class="wrapper">
+               <div class="switch">
+                   <h2 class="title active" id="sign-in-title">Sign in</h2>
+                   <h2 class="title" id="sign-up-title">Sign Up</h2>
+               </div>
+               <div class="warning"></div>
+               <div class="forms">
+                    <div class="item">
+                        <form action="" method = "post" class="field">
+
+                            <div class="value">
+                                <label class = "name" for="#sign-in-login">Login</label>
+                                <input class = "text"  id="sign-in-login" type="text">
+                            </div>
+                            <div class="value">
+                                <label class ="name" for="#sign-in-psw">Password</label>
+                                <input class = "text"  id="sign-in-psw" type="password">
+                            </div>
+
+                        </form>
+                        <div class="btm" id="sign-in-btm">Sing In</div>
+                    </div>
+
+                    <div class="item">
+                        <form action="" method="post" class="field">
+
+                            <div class="value">
+                                <label for="#" class="name">Login</label>
+                                <input class="text" id="sign-up-login" type="text">
+                            </div>
+                            <div class="value">
+                                <label for="#" class="name">NickName</label>
+                                <input class="text" id="sign-up-nickname" type="text">
+                            </div>
+                            <div class="value">
+                                <label for="#" class="name">Password</label>
+                                <input class="text" id="sign-up-psw" type="password">
+                            </div>
+                            <div class="value">
+                                <label for="#" class="name">Confirm Password</label>
+                                <input class="text" id="sign-up-confpsw" type="password">
+                            </div>
+                        </form>
+                        <div class="btm" id="sign-up-btm">Sign Up</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="javascripts/lib/jquery-3.3.1.min.js"></script>
+<script src="<%= assetFingerprint("javascripts/login.js") %>"></script>
+<%- include("layout/footer.ejs") %> 

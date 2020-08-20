@@ -1,0 +1,27 @@
+.value{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    transition: all .3s linear;
+
+}
+
+.name{
+    font-weight: 100;
+    text-transform: uppercase;
+    font-size: 13px;
+    margin-left: 30px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.text{
+    color: white;
+    font-size: 13px;
+    display: block;
+    padding: 10px 15px;
+    background-color: rgba(#ccc, .4);
+    border-radius: 15px;
+    font-weight: bolder;
+}

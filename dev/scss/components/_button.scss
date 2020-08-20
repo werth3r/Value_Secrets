@@ -1,0 +1,16 @@
+.btm{
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    color: white;
+    padding: 8px 15px;
+    border: 1px solid white;
+    transition: all .3s;
+    align-self: center;
+    &:hover{
+        cursor: pointer;
+        border-color: $fontColor;
+        color: $fontColor;
+    }
+}

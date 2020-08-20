@@ -1,0 +1,33 @@
+$bodyColor: white;
+$fontColor: #00af00;
+
+@import "reset";
+@import "font";
+
+body{
+    height: auto;
+    width: 100vw;
+    
+    background: $bodyColor;
+    
+    font-family: "Arial", sans-serif;
+    
+}
+
+.container{
+        width: auto;
+        max-width: 1200px;
+        margin: 0 auto;
+}
+
+@import "header";
+@import "intro";
+@import "registration";
+@import "error";
+@import "banner";
+@import "chat";
+@import "components/scrollbar";
+@import "components/popup";
+@import "components/ask";
+@import "components/alert"
+

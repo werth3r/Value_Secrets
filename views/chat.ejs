@@ -1,0 +1,110 @@
+<%- include("layout/title.ejs") -%>
+<!--<div class="ask">
+    <div class="wrapper">
+        <div class="message">VasyA wanted to join</div>
+        <div class="options">
+            <div class="btm" id="cancel-button">Reject</div>
+            <div class="btm" id="apply-button">Allow</div>
+        </div>
+    </div>
+</div>-->
+
+<!--<div class="alert">
+    <div class="wrapper">
+        <div class="message sucsessful" id="message">Server Error</div>
+        <div class="btm" id="apply-button">Ok</div>
+    </div>
+</div>-->
+
+<!--<div class="popup view-change">
+    <div class="wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="left-arrow arrow" id="left-arrow"></div>
+                <div class="slider">
+                    <div  class="item"></div>
+                    <div  class="item"></div>
+                    <div  class="item"></div>
+                    <div  class="item"></div>
+                    <div  class="item"></div>
+                    <div  class="item"></div>
+                    <div  class="item"></div>
+                    <div  class="item"></div>
+                </div>
+                <div class="rigth-arrow arrow" id="rigth-arrow"></div>
+            </div>
+            <div class="value">
+                <label for="#" class="name">Nickname</label>
+                <input class="text" id="sign-up-login" type="text">
+            </div>
+        </div>
+        <div class="options">
+            <div class="btm" id="cancel-button">Cancel</div>
+            <div class="btm" id="apply-button">Apply</div>
+        </div>
+    </div>
+</div>-->
+
+<div class="chat">
+    <div class="inner">
+        <div class="side-bar">
+            <div class="wrapper">
+                
+                <div class="avatar" id="user-view"></div>
+                <div class="name">
+                    <div class="nickname" id="user-nickname">VasyA</div>
+                    <div class="sign" id="change-nickname"></div>
+                </div>
+            </div>
+            <div class="options">
+                <div class="btm" id="create-button">create</div>
+                <div class="btm" id="join-button"> join </div>
+            </div>
+            
+        </div>
+        <div class="window">
+            <div class="room-info">
+                <h2 class="room-name" id="room-name">No room</h2>
+            </div>
+            
+            <div class="message-list" id="message-list">
+               
+                <!--<div class="message">
+                    <div class="head">
+                        <div class="user"></div>
+                    </div>
+                    <div class="body">
+                        <div class="title">From VasyA at 22:22</div>
+                        <div class="text">В первой половине романа Аркадий пытается быть похожим на своего друга: он ведет себя развязнее, выступает с позиций нигилизма в споре с дядей, старается скрывать свои порывы чувств. </div>
+                    </div>
+                </div>-->
+                
+                
+                
+            </div>
+            <form class="field" id="field">
+                <input id="input" class="text" type="text">
+                <div class="btm" id="send-button">Send</div>
+            </form>
+        </div>
+        <div class="users">
+            <div class="users-list" id="user-list">
+                <h1 class="title">Users in this room>></h1>
+                <!--<div class="item">
+                    <div class="view"></div>
+                    <div class="name">VasyA</div>
+                </div>-->
+                
+            </div>
+            
+            <a href="api/auth/logout" class="btm" id="logout-btm">Log Out</a>
+        </div>
+    </div>
+</div>
+<script src="javascripts/lib/jquery-3.3.1.min.js"></script>
+<script src="javascripts/lib/socket.io.js"></script>
+<script src="<%= assetFingerprint("javascripts/crypto.js") %>"></script>
+<script src="<%= assetFingerprint("javascripts/chat.js") %>"></script>
+<script src="<%= assetFingerprint("javascripts/chat-ui.js") %>"></script>
+<script src="<%= assetFingerprint("javascripts/chat-gate.js") %>"></script>
+<%- include("layout/footer.ejs") -%>
