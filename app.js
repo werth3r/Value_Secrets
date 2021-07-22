@@ -54,6 +54,7 @@ app.get("/start", (req, res) => {
 });
 
 app.use("/api/auth/", routes.auth);
+app.use("/api/upload/", routes.upload)
 
 
 //Catching Errors

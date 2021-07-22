@@ -1,66 +1,109 @@
 const Room = require("../models").Room;
+const User = require("../models").User;
 const leaveRoom = require("./leaveRoom");
 
 function inRoom(userlist, user){
-    let id = user.roomId;
+    const login = user.login;
     for(let item of userlist){
-        if(item.roomId == id) return true;
+        if(item.login == login) return true;
     }
     return false;
 }
 
-module.exports =  function(io, socket, notLeave){
+function connectRoom(io, socket, roomName, notLeave){
+    Room
+    .findOne({name: roomName})
+    .then(room => {
+        const lastRoom = socket.user.room, users = room.users
+        const newUser = {
+            login: socket.user.login,
+            view: socket.user.view,
+            nickname: socket.user.nickname
+        }
+        users.push(newUser)
+
+        Room
+        .findOneAndUpdate({name: roomName}, {users})
+        .then(() => {
+            console.log(`<${socket.user.nickname}> join room <${roomName}>`)
+            socket.user.room = roomName
+            socket.emit(
+                'room-join', 
+                {
+                    status: true,
+                    room: roomName,
+                    users,
+                    isPublic: room.isPublic
+                }
+            )
+            io.to(roomName).emit(
+                "user-join", 
+                {
+                    login: socket.user.login, 
+                    nickname: socket.user.nickname, 
+                    view: socket.user.view
+                }
+            )
+            socket.join(room.name)
+            if(!notLeave)
+                leaveRoom(io, socket)(null, lastRoom)
+            User
+            .findOneAndUpdate({login: socket.user.login}, {room: roomName})
+            .catch(err => {
+                console.log('Error while updating user')
+                console.log(err)
+            })
+        })
+        .catch(err => {
+            console.log('Error while updating room')
+            console.log(err);
+            socket.emit('room-join', {staus: false, message: 'Server error'});
+        })
+    })
+    .catch(err => {
+        console.log('Error while searching room')
+        console.log(err);
+        socket.emit('room-join', {staus: false, message: 'Server error'})
+    })
+}
+
+function joinRoom(io, socket, notLeave=false){
     return function(data){
         if(!data.room){
-            socket.emit("room-join", {status: false, message: "No room"});
-        }else{
-            Room.findOne({name: data.room})
-            .then((room) => {
+            socket.emit('room-join', {status: false, message: 'No room'})
+        } else {
+            Room
+            .findOne({name: data.room})
+            .then(room => {
                 if(!room){
-                    socket.emit("room-join", {status: false, message: "No such room"});
-                } else {
-                    let lastroom = socket.user.room;
-                    let userlist = room.users;
-                    let roomname = room.name;
-                    let newUser = {name: socket.user.nickname, view: socket.user.view,  roomId: socket.user.roomId};
-                    if(inRoom(userlist, newUser)){
-                        socket.emit("room-join", {status: true, room: roomname, users: userlist});
-                    } else {
-                        userlist.push(newUser);
+                    socket.emit("room-join", {status: false, message: "No such room"})
 
-                        Room.findOneAndUpdate({name: roomname}, {users: userlist})
-                        .then((room) => {
-                            console.log("<" + socket.user.nickname + "> join room <" + roomname + ">");
-                            socket.emit("room-join", {status: true, room: roomname, users: userlist, isPublic: room.isPublic});
-                            if(!room.isPublic){
-                                io.sockets.socket(room.admin).emit("key-req", {key: data.key});
-                                io.sockets.socket(room.admin).emit("key-res", (key_res) => {
-                                    socket.user.room = roomname;
-                                    socket.join(room.name);
-                                    socket.emit("key-send", key_res)
-                                    socket.broadcast.to(room.name).emit("user-join", {id: socket.user.roomId, nickname: socket.user.nickname, view: socket.user.view});
-                                    if(!notLeave) leaveRoom(io, socket)(null, lastroom);
-                                });
-                            } else {
-                                socket.user.room = roomname;
-                                socket.join(room.name);
-                                socket.broadcast.to(room.name).emit("user-join", {id: socket.user.roomId, nickname: socket.user.nickname, view: socket.user.view});
-                                if(!notLeave) leaveRoom(io, socket)(null, lastroom);
-                            }
-                            
-                            
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            socket.emit("room-join", {staus: false, message: "Server error"});
-                        })
-                    }
-                };
-            })
-            .catch((err) => {
-                console.log(err);
-                socket.emit("room-join", {staus: false, message: "Server error"})
+                } else if(!room.isPublic){
+                    socket.join(room.name + '_' + socket.user.login)
+                    io.to(room.name).emit(
+                        'join-req', 
+                        {
+                            login: socket.user.login,
+                            id: socket.id,
+                            publicKey: data.publicKey
+                        }
+                    )
+                    
+                    setTimeout(() => {
+                        socket.emit('room-join', {status: false, message: 'No one connected you to this room'})
+                    }, 20 * 1000)
+
+                } else {
+                    connectRoom(io, socket, data.room, notLeave)
+                }
             })
         }
-    };
-};
+    }
+}
+
+
+
+module.exports = {
+    joinRoom,
+    connectRoom
+}

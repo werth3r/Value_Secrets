@@ -1,0 +1,40 @@
+.chk{
+    cursor: pointer;
+
+    input{
+        display: none;
+    }
+
+    .name{
+        margin-left: 10px;
+    }
+    
+    .style{
+        position: relative;
+        display: inline-block;
+        height: 13px;
+        width: 13px;
+        border: #fff 1px solid;
+        border-radius: 50%;
+
+        &::before{
+            content: "";
+            background: radial-gradient(circle, #0f0 0%, #0f0 40%,  rgba(0, 0, 0, 0) 100%);
+            position: absolute;
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: .2s;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    input:checked + .style::before{
+        opacity: .8;
+    }
+
+}
+

@@ -13,11 +13,16 @@ const schema = new Schema({
     },
     password: {
         type: String,
-        requred: true
+        required: true
     },
     view: {
-        type: Number,
-        default: 0
+        type: String,
+        default: '/images/profile_pictures/view0.jpg'
+    },
+    room: {
+        type: String,
+        required: true,
+        default: "default"
     }
     
 }, {

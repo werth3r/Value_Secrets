@@ -16,7 +16,10 @@ const schema = new Schema({
     },
     isPublic: {
         type: Boolean,
-        default: false
+        default: true
+    },
+    key: {
+        type: String
     }
 }, {
     timestamps: true

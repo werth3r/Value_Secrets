@@ -12,14 +12,14 @@ function getTime(){
 
 module.exports = function(io, socket, data){
     return function(data){
-        let nickname = socket.user.nickname;
+        let lastNickname = socket.user.nickname;
         if(!data.nickname){
             socket.emit("nickname-change", {status: false, message: "No enougth data"});
         } else {
             User.findByIdAndUpdate(socket.user._id, {nickname: data.nickname})
             .then((user) => {
                 socket.emit("nickname-change", {status: true, nickname: data.nickname})
-                io.to(socket.user.room).emit("user-nickname", {id: socket.user.roomId, nickname: data.nickname});
+                io.to(socket.user.room).emit("user-nickname", {lastNickname, login: socket.user.login, nickname: data.nickname});
                 socket.user.nickname = data.nickname;
             })
             .catch((err) => {

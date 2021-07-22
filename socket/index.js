@@ -6,7 +6,7 @@ const sessionStore = require("../lib/sessionStore");
 const User = require("../models").User;
 const Room = require("../models").Room;
 
-const joinRoom = require("./joinRoom");
+const {joinRoom, connectRoom} = require("./joinRoom");
 const createRoom = require("./createRoom");
 const changeNickname = require("./changeNickname");
 const changeView = require("./changeView");
@@ -22,13 +22,23 @@ function getTime(){
     
 }
 
-module.exports = function(server){
+module.exports = async function(server){
     const io = require("socket.io")(server);
-    io.count = 0;
     
-    Room.create({name: "default", isPublic: true});
+    const res = await Room.updateMany({}, {users: []});
+   
+    Room.findOne({name: "default"}, (err, data) => {
+        if(!data){
+            Room.create({name: "default", isPublic: true});
+            console.log("Created default room")
+        }
+        if(err)
+            console.error(err)
+    })
+    
     
     io.on("connection", (socket) => {
+        //console.log(io.of('/').sockets)
         console.log("New Socket");
         
         //Authorization
@@ -43,15 +53,29 @@ module.exports = function(server){
                 
                 //Initialization
                 socket.user = user;
-                socket.user.roomId = io.count++;
-                socket.user.room = "default";
-                socket.emit("init", 
-                {view: socket.user.view, nickname: socket.user.nickname, id: socket.user.roomId});
-                joinRoom(io, socket, true)({room: "default"});
+                socket.emit(
+                    "init", 
+                    {
+                        view: socket.user.view, 
+                        nickname: socket.user.nickname
+                    }
+                )
+
+                joinRoom(io, socket, true)({room: socket.user.room});
                 
                 socket.on("message", (data) => {
                     let text = data.message;
-                    io.to(socket.user.room).emit("message-send", {time: getTime(), author: socket.user.roomId, message: text})
+                    io.to(socket.user.room).emit(
+                        "message-send", 
+                        {
+                            time: getTime(), 
+                            login: socket.user.login, 
+                            nickname: socket.user.nickname, 
+                            view: socket.user.view, 
+                            message: text,
+                            iv: data.iv
+                        }
+                    )
                 });
                 
                 socket.on("join", joinRoom(io, socket));
@@ -59,6 +83,14 @@ module.exports = function(server){
                 socket.on("nickname", changeNickname(io, socket));
                 socket.on("view", changeView(io, socket));
                 socket.on("disconnect", leaveRoom(io, socket));
+
+                socket.on("key-res", data => {
+                    const socketId = data.id
+                    io.to(socketId).emit('key-res', {wrapedKey: data.wrapedKey})
+                    console.log(typeof io.of('/').sockets)
+                    connectRoom(io, io.of('/').sockets[socketId], socket.user.room)
+                    
+                })
             })
             .catch(err => {
                 throw err;
